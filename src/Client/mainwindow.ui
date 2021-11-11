@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>222</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="SendButton">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -27,7 +27,7 @@
      <string>Send</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="ExitButton">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -40,7 +40,7 @@
      <string>Exit</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="ReloadButton">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -53,7 +53,7 @@
      <string>Reload</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="AboutButton">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -66,7 +66,7 @@
      <string>About</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="SaveButton">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -79,7 +79,7 @@
      <string>Save</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="NameEdit">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -89,7 +89,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="TextLine">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -99,7 +99,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
+   <widget class="QListWidget" name="MessagesWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -110,7 +110,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
