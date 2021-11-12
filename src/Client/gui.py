@@ -10,7 +10,7 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi('mainwindow.ui', self)
         self.setFixedSize(280, 210)
-        self.pushButton.clicked.connect(self.run)
+        # self.pushButton.clicked.connect(self.run)
 
     def encode(self, text):
         return
