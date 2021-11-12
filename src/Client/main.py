@@ -9,7 +9,7 @@ def send_message(data) -> dict:
     con = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     con.connect(Server)
     con.sendall(json.dumps(data).encode('utf-8'))
-    answer = json.JSONDecoder().decode(con.recv(1024).decode('utf-8'))
+    answer = json.JSONDecoder().decode(con.recv(400).decode('utf-8'))
     con.close()
     return answer
 
