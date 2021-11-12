@@ -13,6 +13,13 @@ def send_message(data) -> dict:
     con.close()
     return answer
 
+def get_base(data) -> dict:
+    con = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    con.connect(Server)
+    con.sendall(json.dumps(data).encode('utf-8'))
+    answer = json.JSONDecoder().decode(con.recv(26000).decode('utf-8'))
+    con.close()
+    return answer
 
 def menu() -> str:
     print('send <name> <text> - for send message')
@@ -34,7 +41,7 @@ while True:
     if useranswer[0] == 'send':
         name = useranswer[1]
         message = ' '.join(useranswer[2:])
-        if len(name) <= 15 and len(message) <= 200:
+        if len(bytearray(name, encoding='utf-8')) <= 16 and len(bytearray(message, encoding='utf-8')) <= 256:
             server_answer = send_message(
                 {'command': 'send', 'time': datetime.datetime.now(), 'name': name, 'message': message})
             if server_answer['code'] == 'success':
@@ -46,7 +53,7 @@ while True:
             print(f"[{i['time'].ctime()}] {i['name']} - {i['message']}")
     if useranswer[0] == 'reload' or datetime.datetime.now() - LastReloadTime > datetime.timedelta(seconds=5):
         LastReloadTime = datetime.datetime.now()
-        Messages = send_message({'command': 'get'})
+        Messages = get_base({'command': 'get'})
     if useranswer[0] == 'save':
         pass
     if useranswer[0] == 'connection':
