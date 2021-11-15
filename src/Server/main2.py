@@ -17,7 +17,7 @@ def get_connection():
 
 
 # {'name':'', 'time':'%d.%m.%Y %H:%M:%S', 'message':''}
-def add_to_base(data):
+def add_to_base(data) -> str:
     pass
 
 
@@ -36,8 +36,7 @@ for connection in get_connection():
         data = data['data']
         # check data for sql injections
         # add try catch
-        add_to_base(data)
-        connection[0].send(json.dumps({'code': 'success'}).encode("utf-8"))
+        connection[0].send(json.dumps({'code': add_to_base(data)}).encode("utf-8"))
     elif data['command'] == 'get':
         connection[0].send(json.dumps(get_base()).encode("utf-8"))
     elif data['command'] == 'latency':
