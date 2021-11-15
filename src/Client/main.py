@@ -43,7 +43,7 @@ while True:
         message = ' '.join(useranswer[2:])
         if len(bytearray(name, encoding='utf-8')) <= 16 and len(bytearray(message, encoding='utf-8')) <= 256:
             server_answer = send_message(
-                {'command': 'send', 'time': datetime.datetime.now(), 'name': name, 'message': message})
+                {'command': 'send', 'time': str(datetime.datetime.now()), 'name': name, 'message': message})
             if server_answer['code'] == 'success':
                 print('success')
             else:
