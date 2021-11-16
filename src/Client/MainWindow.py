@@ -1,20 +1,36 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtCore import pyqtSignal, QObject
 from ui_MainWindow import Ui_MainWindow
 from ConnectionWindow import ConnectionWidget
 from ErrorDialog import ErrorDialog
+
+class Communicate(QObject):
+    MainFromConnection = pyqtSignal(object)
+
 
 class MainWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.setFixedSize(505, 354)
-        self.ExitButton.clicked.connect(self.exit)
+        self.communication = Communicate()
+        self.ip = str()
+        self.port = int()
+        self.ExitButton.clicked.connect(self.on_exit)
         self.on_connection_lost()
+        self.get_ip_port()
+        self.setWindowTitle(f"OpenLChat {self.ip}:{str(self.port)}")
+
+    def get_ip_port(self):
         self.Connection = ConnectionWidget()
         self.Connection.show()
+        self.Connection.communication.MainFromConnection.connect(self.set_ip_port)
 
+    def set_ip_port(self, ip_port):
+        ip = ip_port[0]
+        port = int(ip_port[1])
 
     def on_connection_lost(self):
         self.ReloadButton.setDisabled(True)
@@ -41,7 +57,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def reload(self):
         pass
 
-    def exit(self):
+    def on_exit(self):
         ex.close()
 
 
