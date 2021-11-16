@@ -1,24 +1,11 @@
+import net
 import json
-import socket
-
-# getting server up
-listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-Server = (socket.gethostbyname(socket.gethostname()), int(input('PORT:')))
-listener.bind(Server)
-listener.listen(1)
-
-
-def get_connection():
-    while True:
-        data = listener.accept()
-        if data:
-            yield data
-
 
 # {'name':'', 'time':'%d.%m.%Y %H:%M:%S', 'message':''}
 def add_to_base(data) -> str:
-    pass
+    cur = self.con.cursor()
+    cur.execute("SELECT * FROM films WHERE id=?",
+                         (item_id := self.spinBox.text(),)).fetchall()
 
 
 def get_base() -> list:
@@ -34,12 +21,9 @@ for connection in get_connection():
     check_base()
     if data['command'] == 'send':
         data = data['data']
-        # check data for sql injections
-        # add try catch
         connection[0].send(json.dumps({'code': add_to_base(data)}).encode("utf-8"))
     elif data['command'] == 'get':
         connection[0].send(json.dumps(get_base()).encode("utf-8"))
-    elif data['command'] == 'latency':
-        pass
-    elif data['command'] == 'info':
-        pass
+    else:
+        connection[0].send(json.dumps({'code': 'incorrect command'}).encode("utf-8"))
+    connection.close()
