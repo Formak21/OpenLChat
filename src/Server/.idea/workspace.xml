@@ -28,7 +28,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
   </component>
-  <component name="RunManager" selected="Python.main2">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Server" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -73,8 +73,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main2" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.main2" />
       </list>
     </recent_temporary>
   </component>

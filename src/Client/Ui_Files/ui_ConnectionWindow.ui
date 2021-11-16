@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>IP:</string>
+     <string>IPv4:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -123,32 +123,6 @@
      <string>Ver:1.0</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="AboutButton">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>115</y>
-      <width>110</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>About</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="ExitButton">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>115</y>
-      <width>110</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Exit</string>
-    </property>
-   </widget>
    <zorder>label</zorder>
    <zorder>IPLine</zorder>
    <zorder>PortLine</zorder>
@@ -157,8 +131,6 @@
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>
    <zorder>VersionLabel</zorder>
-   <zorder>AboutButton</zorder>
-   <zorder>ExitButton</zorder>
   </widget>
  </widget>
  <resources/>

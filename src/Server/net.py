@@ -7,7 +7,7 @@ listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 Server = (socket.gethostbyname(socket.gethostname()), int(input('PORT:')))
 listener.bind(Server)
 listener.listen(1)
-database = sqlite3.connect("messages_db.sqlite")
+database = sqlite3.connect("Database/messages_db.sqlite")
 cursor = database.cursor()
 
 
