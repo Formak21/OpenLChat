@@ -8,6 +8,7 @@ Server = (socket.gethostbyname(socket.gethostname()), int(input('PORT:')))
 listener.bind(Server)
 listener.listen(1)
 database = sqlite3.connect("messages_db.sqlite")
+cursor = database.cursor()
 
 
 def get_connection():

@@ -1,24 +1,27 @@
 import net
 import json
 
-# {'name':'', 'time':'%d.%m.%Y %H:%M:%S', 'message':''}
+
+# data format - {'name': 'max 16 bytes', 'message': 'max 256 bytes', 'time': '%d.%m.%Y %H:%M:%S'}
 def add_to_base(data) -> str:
-    cur = self.con.cursor()
-    cur.execute("SELECT * FROM films WHERE id=?",
-                         (item_id := self.spinBox.text(),)).fetchall()
+    if len(net.cursor.execute('SELECT * FROM messages_main').fetchall()) >= 64:
+        net.cursor.execute('DELETE FROM messages_main WHERE id < 48')
+    code = 'success'
+    # check name message and time for shitty sql injections and other pieces of shit
+    # add try catch for errors, and return it with code.
+    net.cursor.execute("""INSERT INTO messages_main (time, name, message)""" +
+                       f""" VALUES ("{data['time']}", "{data['name']}", "{data['message']}")""")
+    net.database.commit()
+    return code
 
 
 def get_base() -> list:
-    pass
+    return [{'time': i[1], 'name': i[2], 'message': i[3]} for i in
+            net.cursor.execute('SELECT * FROM messages_main').fetchall()]
 
 
-def check_base():
-    pass
-
-
-for connection in get_connection():
-    data = json.JSONDecoder.decode(connection[0].recv(500).decode('utf-8'))
-    check_base()
+for connection in net.get_connection():
+    data = json.loads(connection[0].recv(500).decode('utf-8'))
     if data['command'] == 'send':
         data = data['data']
         connection[0].send(json.dumps({'code': add_to_base(data)}).encode("utf-8"))
