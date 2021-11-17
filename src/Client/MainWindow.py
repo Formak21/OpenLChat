@@ -20,11 +20,7 @@ class AutoUpdater(QObject):
     def run(self):
         while True:
             self.AutoUpdateTrigger.emit()
-<<<<<<< Updated upstream
             QThread.msleep(7000)
-=======
-            QThread.msleep(5000)
->>>>>>> Stashed changes
 
 
 class MainWidget(QMainWindow, Ui_MainWindow):
