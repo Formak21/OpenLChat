@@ -19,7 +19,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.SendButton = QtWidgets.QPushButton(self.centralwidget)
         self.SendButton.setGeometry(QtCore.QRect(430, 330, 95, 30))
-        self.SendButton.setAutoDefault(True)
+        self.SendButton.setAutoDefault(False)
         self.SendButton.setDefault(True)
         self.SendButton.setObjectName("SendButton")
         self.ExitButton = QtWidgets.QPushButton(self.centralwidget)
