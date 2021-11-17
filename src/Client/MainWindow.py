@@ -89,7 +89,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         check_started = datetime.datetime.now()
         while datetime.datetime.now() - check_started < datetime.timedelta(seconds=2):
             pass
-        check_thread.destroyed()
+        check_thread.exit()
         if net.Check_result is None:
             return False
         data = net.Check_result
