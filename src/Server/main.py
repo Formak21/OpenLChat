@@ -1,16 +1,16 @@
 import welcome
 import net
 import json
+import datetime
 
 
-# data format - {'name': 'max 16 bytes', 'message': 'max 256 bytes', 'time': '%d.%m.%Y %H:%M:%S'}
+# data format - {'name': 'max 16 bytes', 'message': 'max 256 bytes'}
 def add_to_base(data) -> str:
     # checking data format
     if sum([int(bool(data[i])) for i in data.keys()]) != 3:
         return 'data_err'
     if len(bytearray(data['name'], encoding='utf-8')) <= 16 and len(
-            bytearray(data['message'], encoding='utf-8')) <= 256 and len(
-            bytearray(data['time'], encoding='utf-8')) <= 20:
+            bytearray(data['message'], encoding='utf-8')) <= 256:
         return 'len_err'
     # checking size of db
     if len(net.cursor.execute('SELECT * FROM messages_main').fetchall()) >= 64:
@@ -21,14 +21,15 @@ def add_to_base(data) -> str:
 
     # adding message to base
     net.cursor.execute("""INSERT INTO messages_main (time, name, message)""" +
-                       f""" VALUES ("{data['time']}", "{data['name']}", "{data['message']}")""")
+                       f""" VALUES ("{datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S')}", """ +
+                       f""""{data['name']}", "{data['message']}")""")
     net.database.commit()
     # returning operation state
     return 'success'
 
 
 def get_base() -> list:
-    return [{'time': k[0], 'name': k[1], 'message': k[2]} for k in
+    return [{'name': k[1], 'message': k[2]} for k in
             net.cursor.execute('SELECT * FROM messages_main').fetchall()]
 
 
@@ -43,6 +44,8 @@ for connection in net.get_connection():
         connection[0].send(json.dumps({'code': add_to_base(data)}).encode("utf-8"))
     elif data['command'] == 'get':
         connection[0].send(json.dumps(get_base()).encode("utf-8"))
+    elif data['command'] == 'test':
+        connection[0].send(json.dumps({'code': 'we are stable, ver:' + welcome.VERSION}).encode("utf-8"))
     else:
         connection[0].send(json.dumps({'code': 'incorrect command'}).encode("utf-8"))
     connection[0].close()

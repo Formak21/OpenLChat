@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>40</y>
+      <y>70</y>
       <width>75</width>
       <height>24</height>
      </rect>
@@ -120,6 +120,19 @@
     </property>
     <property name="text">
      <string>Message:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ReconnectButton">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>40</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reconnect</string>
     </property>
    </widget>
   </widget>

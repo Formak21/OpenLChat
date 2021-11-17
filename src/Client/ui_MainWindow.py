@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file '.\Ui_Files\ui_MainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         self.ExitButton.setGeometry(QtCore.QRect(420, 10, 75, 24))
         self.ExitButton.setObjectName("ExitButton")
         self.ReloadButton = QtWidgets.QPushButton(self.centralwidget)
-        self.ReloadButton.setGeometry(QtCore.QRect(420, 40, 75, 24))
+        self.ReloadButton.setGeometry(QtCore.QRect(420, 70, 75, 24))
         self.ReloadButton.setObjectName("ReloadButton")
         self.AboutButton = QtWidgets.QPushButton(self.centralwidget)
         self.AboutButton.setGeometry(QtCore.QRect(200, 70, 75, 24))
@@ -44,6 +44,9 @@ class Ui_MainWindow(object):
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(100, 305, 55, 13))
         self.label_2.setObjectName("label_2")
+        self.ReconnectButton = QtWidgets.QPushButton(self.centralwidget)
+        self.ReconnectButton.setGeometry(QtCore.QRect(420, 40, 75, 24))
+        self.ReconnectButton.setObjectName("ReconnectButton")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -58,3 +61,4 @@ class Ui_MainWindow(object):
         self.AboutButton.setText(_translate("MainWindow", "About"))
         self.label.setText(_translate("MainWindow", "Name:"))
         self.label_2.setText(_translate("MainWindow", "Message:"))
+        self.ReconnectButton.setText(_translate("MainWindow", "Reconnect"))
