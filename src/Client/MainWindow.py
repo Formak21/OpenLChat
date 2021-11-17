@@ -3,6 +3,7 @@ import sys
 import net
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, QThread
+from PyQt5.QtGui import QPixmap
 from ui_MainWindow import Ui_MainWindow
 from ConnectionDialog import ConnectionDialog
 from ErrorDialog import ErrorDialog
@@ -28,6 +29,8 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.setFixedSize(505, 354)
+        self.pixelneko = QPixmap('pixelneko.png')
+        self.neko.setPixmap(self.pixelneko)
         self.communication = Communicate()
         self.ConnectionDialog = ConnectionDialog()
         self.ConnectionDialog.communication.MainFromConnection.connect(self.set_ip_port)
@@ -131,6 +134,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.MessagesWidget.clear()
         for i in base:
             self.MessagesWidget.addItem(f'[{i["name"]}] - {i["message"]}')
+        self.MessagesWidget.scrollToBottom()
         self.LastReload = datetime.datetime.now()
 
     def on_exit(self):
