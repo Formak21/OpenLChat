@@ -2,7 +2,7 @@ import datetime
 import sys
 import net
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, QThread
 from ui_MainWindow import Ui_MainWindow
 from ConnectionDialog import ConnectionDialog
 from ErrorDialog import ErrorDialog
@@ -11,6 +11,16 @@ from ErrorDialog import ErrorDialog
 class Communicate(QObject):
     MainFromConnection = pyqtSignal(object)
     MainToError = pyqtSignal(object)
+
+
+class AutoUpdater(QObject):
+    running = False
+    AutoUpdateTrigger = pyqtSignal()
+
+    def run(self):
+        while True:
+            self.AutoUpdateTrigger.emit()
+            QThread.msleep(1000)
 
 
 class MainWidget(QMainWindow, Ui_MainWindow):
@@ -33,8 +43,15 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.SendButton.clicked.connect(self.send)
         self.on_reconnect()
         self.reload()
-        # self.auto_reload()
 
+        self.AutoUpdaterThread = QThread()
+        self.AutoUpdater = AutoUpdater()
+        self.AutoUpdater.moveToThread(self.AutoUpdaterThread)
+        self.AutoUpdater.AutoUpdateTrigger.connect(self.auto_reload)
+        self.AutoUpdaterThread.started.connect(self.AutoUpdater.run)
+        self.AutoUpdaterThread.start()
+
+    @pyqtSlot()
     def auto_reload(self):
         while True:
             if datetime.datetime.now() - self.LastReload == datetime.timedelta(seconds=5):
@@ -93,9 +110,11 @@ class MainWidget(QMainWindow, Ui_MainWindow):
                 bytearray(self.TextLine.text(), encoding='utf-8')) <= 256:
             code = self.Server.send_message({'name': self.NameEdit.text(), 'message': self.TextLine.text()})
             if code == 'success':
+                self.reload()
                 return
             elif code == 'data_err' or code == 'len_err':
                 self.on_error('Unexpected error.')
+                self.reload()
             else:
                 self.on_error('disconnected.')
                 self.on_reconnect()
