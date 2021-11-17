@@ -81,6 +81,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.IsConnectionWorks = False
 
     def ConnectionChecker(self) -> bool:
+        return True
         check_thread = QThread()
         connection_checker = net.ConnectionChecker((self.ip, self.port))
         connection_checker.moveToThread(check_thread)
