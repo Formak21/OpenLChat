@@ -1,1 +1,5 @@
-
+.DS_Store
+src/Client/.idea/*
+src/Server/.idea/*
+src/Client/__pycache__/*
+src/Server/__pycache__/*
