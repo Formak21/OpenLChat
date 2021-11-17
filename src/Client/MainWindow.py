@@ -44,7 +44,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.AutoUpdaterThread.started.connect(self.AutoUpdater.run)
         self.Server = None
 
-        self.ExitButton.clicked.connect(exit)
+        self.ExitButton.clicked.connect(self.close)
         self.ReconnectButton.clicked.connect(self.on_reconnect)
         self.ReloadButton.clicked.connect(self.reload)
         self.SendButton.clicked.connect(self.send)

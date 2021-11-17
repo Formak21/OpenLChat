@@ -14,7 +14,7 @@ class ConnectionDialog(QtWidgets.QDialog, Ui_ConnectionDialog):
         self.setFixedSize(440, 150)
         self.communication = Communicate()
         self.ConnectButton.clicked.connect(self.connect)
-        self.ExitButton.clicked.connect(exit)
+        self.ExitButton.clicked.connect(self.close)
 
     def connect(self):
         ip_port = (self.IPLine.text(), self.PortLine.text())
