@@ -81,21 +81,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.IsConnectionWorks = False
 
     def ConnectionChecker(self) -> bool:
-        return True
-        check_thread = QThread()
-        connection_checker = net.ConnectionChecker((self.ip, self.port))
-        connection_checker.moveToThread(check_thread)
-        check_thread.started.connect(connection_checker.check_connection)
-        check_thread.start()
-        check_started = datetime.datetime.now()
-        while datetime.datetime.now() - check_started < datetime.timedelta(seconds=2):
-            pass
-        check_thread.exit()
-        if net.Check_result is None:
-            return False
-        data = net.Check_result
-        net.Check_result = None
-        return data
+        return net.check_connection((self.ip, self.port))
 
     def on_connection_lost(self):
         self.ReloadButton.setDisabled(True)
