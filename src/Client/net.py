@@ -32,7 +32,7 @@ def check_connection(ip_port):
     try:
         con = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         con.settimeout(4)
-        con.connect(.ip_port)
+        con.connect(ip_port)
         con.send(json.dumps({'command': 'test'}).encode('utf-8'))
         return json.loads(con.recv(500).decode('utf-8'))['code'][:13] == 'we are stable'
     except:
