@@ -20,7 +20,7 @@ class AutoUpdater(QObject):
     def run(self):
         while True:
             self.AutoUpdateTrigger.emit()
-            QThread.msleep(5000)
+            QThread.msleep(1000)
 
 
 class MainWidget(QMainWindow, Ui_MainWindow):
@@ -53,8 +53,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def auto_reload(self):
-        if datetime.datetime.now() - self.LastReload == datetime.timedelta(seconds=5):
-            self.reload()
+        self.reload()
 
     def on_reconnect(self):
         self.IsConnectionWorks = False
