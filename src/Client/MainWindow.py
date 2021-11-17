@@ -33,7 +33,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.SendButton.clicked.connect(self.send)
         self.on_reconnect()
         self.reload()
-        self.auto_reload()
+        # self.auto_reload()
 
     def auto_reload(self):
         while True:

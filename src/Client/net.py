@@ -13,6 +13,7 @@ class OpenLChatClient:
             con.send(json.dumps({'command': 'send', 'data':message}).encode('utf-8'))
             return json.loads(con.recv(500).decode('utf-8'))['code']
         except:
+            print()
             return 'CONNECTION_LOST_OR_SOMETHING_ELSE'
 
     def get_base(self):
