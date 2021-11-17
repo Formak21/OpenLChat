@@ -1,3 +1,4 @@
+import datetime
 import sys
 import net
 from PyQt5.QtWidgets import QApplication, QMainWindow
@@ -25,11 +26,19 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.IsConnectionWorks = False
         self.ip = str()
         self.port = int()
+        self.LastReload = datetime.datetime.now()
         self.ExitButton.clicked.connect(self.on_exit)
         self.ReconnectButton.clicked.connect(self.on_reconnect)
         self.ReloadButton.clicked.connect(self.reload)
         self.SendButton.clicked.connect(self.send)
-        self.reconnect()
+        self.on_reconnect()
+        self.reload()
+        self.auto_reload()
+
+    def auto_reload(self):
+        while True:
+            if datetime.datetime.now() - self.LastReload == datetime.timedelta(seconds=5):
+                self.reload()
 
     def on_reconnect(self):
         self.IsConnectionWorks = False
@@ -53,7 +62,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.setWindowTitle(f"OpenLChat {self.ip}:{str(self.port)}")
             self.IsConnectionWorks = self.ConnectionChecker()
         else:
-            self.on_error('Error 1 \nIncorrect IPv4 adress or Port.')
+            self.on_error('Error 1 \nIncorrect IPv4 address or Port.')
             self.IsConnectionWorks = False
 
     def ConnectionChecker(self) -> bool:
@@ -82,7 +91,6 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def send(self):
         if 0 < len(bytearray(self.NameEdit.text(), encoding='utf-8')) <= 16 and 0 < len(
                 bytearray(self.TextLine.text(), encoding='utf-8')) <= 256:
-            # self.MessagesWidget.addItem(f'[{self.NameEdit.text()}] - {self.TextLine.text()}')
             code = self.Server.send_message({'name': self.NameEdit.text(), 'message': self.TextLine.text()})
             if code == 'success':
                 return
@@ -95,7 +103,15 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.on_error('Error 2 \nMessage/name is empty or long')
 
     def reload(self):
-        pass
+        base = self.Server.get_base()
+        if type(base) == str:
+            self.on_error('disconnected.')
+            self.on_reconnect()
+            return
+        self.MessagesWidget.clear()
+        for i in base:
+            self.MessagesWidget.addItem(f'[{i["name"]}] - {i["message"]}')
+        self.LastReload = datetime.datetime.now()
 
     def on_exit(self):
         ex.close()
