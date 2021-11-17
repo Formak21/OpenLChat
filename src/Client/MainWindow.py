@@ -20,7 +20,7 @@ class AutoUpdater(QObject):
     def run(self):
         while True:
             self.AutoUpdateTrigger.emit()
-            QThread.msleep(10000)
+            QThread.msleep(7000)
 
 
 class MainWidget(QMainWindow, Ui_MainWindow):
