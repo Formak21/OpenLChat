@@ -42,7 +42,8 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.AutoUpdater.moveToThread(self.AutoUpdaterThread)
         self.AutoUpdater.AutoUpdateTrigger.connect(self.auto_reload)
         self.AutoUpdaterThread.started.connect(self.AutoUpdater.run)
-        
+        self.Server = None
+
         self.ExitButton.clicked.connect(self.on_exit)
         self.ReconnectButton.clicked.connect(self.on_reconnect)
         self.ReloadButton.clicked.connect(self.reload)
@@ -80,7 +81,20 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.IsConnectionWorks = False
 
     def ConnectionChecker(self) -> bool:
-        return net.check_connection((self.ip, self.port))
+        check_thread = QThread()
+        connection_checker = net.ConnectionChecker()
+        connection_checker.moveToThread(check_thread)
+        check_thread.started.connect(connection_checker.check_connection)
+        check_thread.start()
+        check_started = datetime.datetime.now()
+        while datetime.datetime.now() - check_started < datetime.timedelta(seconds=2):
+            pass
+        check_thread.exit()
+        if net.Check_result is None:
+            return False
+        data = net.Check_result
+        net.Check_result = None
+        return data
 
     def on_connection_lost(self):
         self.ReloadButton.setDisabled(True)
