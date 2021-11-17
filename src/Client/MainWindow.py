@@ -107,8 +107,10 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         if 0 < len(bytearray(self.NameEdit.text(), encoding='utf-8')) <= 16 and 0 < len(
                 bytearray(self.TextLine.text(), encoding='utf-8')) <= 256:
             code = self.Server.send_message({'name': self.NameEdit.text(), 'message': self.TextLine.text()})
+
             if code == 'success':
                 self.reload()
+                self.TextLine.clear()
                 return
             elif code == 'data_err' or code == 'len_err':
                 self.on_error('Unexpected error.')
