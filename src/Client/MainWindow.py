@@ -28,7 +28,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setFixedSize(505, 354)
+        self.setFixedSize(545, 380)
         self.communication = Communicate()
         self.ConnectionDialog = ConnectionDialog()
         self.ConnectionDialog.communication.MainFromConnection.connect(self.set_ip_port)
