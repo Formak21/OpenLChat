@@ -37,18 +37,18 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.ip = str()
         self.port = int()
         self.LastReload = datetime.datetime.now()
+        self.AutoUpdaterThread = QThread()
+        self.AutoUpdater = AutoUpdater()
+        self.AutoUpdater.moveToThread(self.AutoUpdaterThread)
+        self.AutoUpdater.AutoUpdateTrigger.connect(self.auto_reload)
+        self.AutoUpdaterThread.started.connect(self.AutoUpdater.run)
+        
         self.ExitButton.clicked.connect(self.on_exit)
         self.ReconnectButton.clicked.connect(self.on_reconnect)
         self.ReloadButton.clicked.connect(self.reload)
         self.SendButton.clicked.connect(self.send)
         self.on_reconnect()
         self.reload()
-
-        self.AutoUpdaterThread = QThread()
-        self.AutoUpdater = AutoUpdater()
-        self.AutoUpdater.moveToThread(self.AutoUpdaterThread)
-        self.AutoUpdater.AutoUpdateTrigger.connect(self.auto_reload)
-        self.AutoUpdaterThread.started.connect(self.AutoUpdater.run)
 
     @pyqtSlot()
     def auto_reload(self):
