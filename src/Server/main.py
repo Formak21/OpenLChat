@@ -7,10 +7,10 @@ import datetime
 # data format - {'name': 'max 16 bytes', 'message': 'max 256 bytes'}
 def add_to_base(data) -> str:
     # checking data format
-    if sum([int(bool(data[i])) for i in data.keys()]) != 3:
+    if sum([int(data[i] != '') for i in data.keys()]) != 2:
         return 'data_err'
-    if len(bytearray(data['name'], encoding='utf-8')) <= 16 and len(
-            bytearray(data['message'], encoding='utf-8')) <= 256:
+    if not (len(bytearray(data['name'], encoding='utf-8')) <= 16 and len(
+            bytearray(data['message'], encoding='utf-8')) <= 256):
         return 'len_err'
     # checking size of db
     if len(net.cursor.execute('SELECT * FROM messages_main').fetchall()) >= 64:
@@ -39,13 +39,19 @@ for connection in net.get_connection():
         connection[0].close()
         continue
     data = json.loads(data)
+    print('LOG:', data)
     if data['command'] == 'send':
         data = data['data']
-        connection[0].send(json.dumps({'code': add_to_base(data)}).encode("utf-8"))
+        answer = {'code': add_to_base(data)}
+        print('LOG:', answer)
+        connection[0].send(json.dumps(answer).encode("utf-8"))
     elif data['command'] == 'get':
+        print('LOG:', 'base sent')
         connection[0].send(json.dumps(get_base()).encode("utf-8"))
     elif data['command'] == 'test':
-        connection[0].send(json.dumps({'code': 'we are stable, ver:' + welcome.VERSION}).encode("utf-8"))
+        answer = {'code': 'we are stable, ver:' + welcome.VERSION}
+        print('LOG:', answer)
+        connection[0].send(json.dumps(answer).encode("utf-8"))
     else:
         connection[0].send(json.dumps({'code': 'incorrect command'}).encode("utf-8"))
     connection[0].close()
