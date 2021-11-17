@@ -1,6 +1,5 @@
 import socket
 import json
-from PyQt5.QtCore import QObject, QThread, pyqtSlot, pyqtSignal
 
 
 class OpenLChatClient:

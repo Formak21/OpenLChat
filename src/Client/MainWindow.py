@@ -3,7 +3,6 @@ import sys
 import net
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, QThread
-from PyQt5.QtGui import QPixmap
 from ui_MainWindow import Ui_MainWindow
 from ConnectionDialog import ConnectionDialog
 from ErrorDialog import ErrorDialog
@@ -45,7 +44,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.AutoUpdaterThread.started.connect(self.AutoUpdater.run)
         self.Server = None
 
-        self.ExitButton.clicked.connect(self.on_exit)
+        self.ExitButton.clicked.connect(exit())
         self.ReconnectButton.clicked.connect(self.on_reconnect)
         self.ReloadButton.clicked.connect(self.reload)
         self.SendButton.clicked.connect(self.send)
@@ -76,12 +75,12 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.ip = ip_port[0]
             self.port = int(ip_port[1])
             self.setWindowTitle(f"OpenLChat {self.ip}:{str(self.port)}")
-            self.IsConnectionWorks = self.ConnectionChecker()
+            self.IsConnectionWorks = self.connection_checker()
         else:
             self.on_error('Error 1 \nIncorrect IPv4 address or Port.')
             self.IsConnectionWorks = False
 
-    def ConnectionChecker(self) -> bool:
+    def connection_checker(self) -> bool:
         return net.check_connection((self.ip, self.port))
 
     def on_connection_lost(self):
@@ -134,9 +133,6 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.MessagesWidget.addItem(f'[{i["name"]}] - {i["message"]}')
         self.MessagesWidget.scrollToBottom()
         self.LastReload = datetime.datetime.now()
-
-    def on_exit(self):
-        ex.close()
 
 
 def except_hook(cls, exception, traceback):
