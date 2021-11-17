@@ -20,7 +20,11 @@ class AutoUpdater(QObject):
     def run(self):
         while True:
             self.AutoUpdateTrigger.emit()
+<<<<<<< Updated upstream
             QThread.msleep(7000)
+=======
+            QThread.msleep(5000)
+>>>>>>> Stashed changes
 
 
 class MainWidget(QMainWindow, Ui_MainWindow):
@@ -56,6 +60,8 @@ class MainWidget(QMainWindow, Ui_MainWindow):
 
     def on_reconnect(self):
         self.IsConnectionWorks = False
+        if self.AutoUpdaterThread.isRunning():
+            self.AutoUpdaterThread.exit()
         self.reconnect()
         self.AutoUpdaterThread.start()
 
