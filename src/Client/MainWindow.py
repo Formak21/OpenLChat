@@ -20,7 +20,7 @@ class AutoUpdater(QObject):
     def run(self):
         while True:
             self.AutoUpdateTrigger.emit()
-            QThread.msleep(1000)
+            QThread.msleep(10000)
 
 
 class MainWidget(QMainWindow, Ui_MainWindow):
@@ -48,7 +48,6 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.ReloadButton.clicked.connect(self.reload)
         self.SendButton.clicked.connect(self.send)
         self.on_reconnect()
-        self.reload()
 
     @pyqtSlot()
     def auto_reload(self):
@@ -57,15 +56,14 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def on_reconnect(self):
         self.IsConnectionWorks = False
         self.reconnect()
+        self.AutoUpdaterThread.start()
 
     def reconnect(self):
-        self.AutoUpdaterThread.exit()
         while not self.IsConnectionWorks:
             self.on_connection_lost()
             self.get_ip_port()
         self.Server = net.OpenLChatClient((self.ip, self.port))
         self.on_connection_back()
-        self.AutoUpdaterThread.start()
 
     def get_ip_port(self):
         self.ConnectionDialog.exec()
@@ -115,7 +113,6 @@ class MainWidget(QMainWindow, Ui_MainWindow):
                 self.on_error('Unexpected error.')
                 self.reload()
             else:
-                self.AutoUpdaterThread.exit()
                 self.on_error('disconnected.')
                 self.on_reconnect()
         else:
@@ -124,7 +121,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def reload(self):
         base = self.Server.get_base()
         if type(base) == str:
-            self.AutoUpdaterThread.exit()
+            self.AutoUpdaterThread.stop()
             self.on_error('disconnected.')
             self.on_reconnect()
             return
@@ -134,7 +131,6 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.LastReload = datetime.datetime.now()
 
     def on_exit(self):
-        self.AutoUpdaterThread.exit()
         ex.close()
 
 
