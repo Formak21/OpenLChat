@@ -29,8 +29,6 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.setFixedSize(505, 354)
-        self.pixelneko = QPixmap('pixelneko.png')
-        self.neko.setPixmap(self.pixelneko)
         self.communication = Communicate()
         self.ConnectionDialog = ConnectionDialog()
         self.ConnectionDialog.communication.MainFromConnection.connect(self.set_ip_port)
