@@ -19,7 +19,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.SendButton = QtWidgets.QPushButton(self.centralwidget)
         self.SendButton.setGeometry(QtCore.QRect(430, 330, 95, 30))
-        self.SendButton.setAutoDefault(False)
+        self.SendButton.setAutoDefault(True)
         self.SendButton.setDefault(True)
         self.SendButton.setObjectName("SendButton")
         self.ExitButton = QtWidgets.QPushButton(self.centralwidget)
@@ -72,6 +72,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "IP:Port OpenLChat"))
         self.SendButton.setText(_translate("MainWindow", "Send"))
+        self.SendButton.setShortcut(_translate("MainWindow", "Return"))
         self.ExitButton.setText(_translate("MainWindow", "Exit"))
         self.ReloadButton.setText(_translate("MainWindow", "Reload"))
         self.label.setText(_translate("MainWindow", "Name:"))
