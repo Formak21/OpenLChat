@@ -13,9 +13,10 @@ def add_to_base(data) -> str:
             bytearray(data['message'], encoding='utf-8')) <= 256):
         return 'len_err'
     # checking size of db
-    if len(net.cursor.execute('SELECT * FROM messages_main').fetchall()) >= 64:
-        for k in range(48):
-            net.cursor.execute('DELETE FROM messages_main WHERE 1')
+    ids = sorted([i[0] for i in net.cursor.execute('SELECT * FROM messages_main').fetchall()])
+    if len(ids) >= 64:
+        for k in ids[:48]:
+            net.cursor.execute(f'DELETE FROM messages_main WHERE ID == {k}')
 
     # add try catch for errors, and return it with code.
 
@@ -29,7 +30,7 @@ def add_to_base(data) -> str:
 
 
 def get_base() -> list:
-    return [{'name': k[1], 'message': k[2]} for k in
+    return [{'name': k[2], 'message': k[3]} for k in
             net.cursor.execute('SELECT * FROM messages_main').fetchall()]
 
 

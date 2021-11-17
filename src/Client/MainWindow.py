@@ -125,7 +125,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def reload(self):
         base = self.Server.get_base()
         if type(base) == str:
-            self.AutoUpdaterThread.stop()
+            self.AutoUpdaterThread.exit()
             self.on_error('disconnected.')
             self.on_reconnect()
             return
