@@ -10,7 +10,7 @@ start compile.bat
 all what u need will be in dist folder
 
 ## For using binaries
-Download from release with tag Server/Client
+Download from release with tag main
 
 READ NOTE ON RELEASE, CAREFULLY
 
