@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         self.neko = QtWidgets.QLabel(self.centralwidget)
         self.neko.setGeometry(QtCore.QRect(420, 110, 125, 230))
         self.neko.setText("")
-        self.neko.setPixmap(QtGui.QPixmap("pixelneko.png"))
+        self.neko.setPixmap(QtGui.QPixmap("pic.png"))
         self.neko.setScaledContents(True)
         self.neko.setObjectName("neko")
         self.neko.raise_()

@@ -1,3 +1,4 @@
+from sys import exit
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSignal, QObject
 from ui_ConnectionDialog import Ui_ConnectionDialog
@@ -14,7 +15,7 @@ class ConnectionDialog(QtWidgets.QDialog, Ui_ConnectionDialog):
         self.setFixedSize(440, 150)
         self.communication = Communicate()
         self.ConnectButton.clicked.connect(self.connect)
-        self.ExitButton.clicked.connect(self.close)
+        self.ExitButton.clicked.connect(exit)
 
     def connect(self):
         ip_port = (self.IPLine.text(), self.PortLine.text())

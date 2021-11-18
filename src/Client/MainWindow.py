@@ -49,7 +49,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.ReloadButton.clicked.connect(self.reload)
         self.SendButton.clicked.connect(self.send)
         self.on_reconnect()
-
+    
     @pyqtSlot()
     def auto_reload(self):
         self.reload()
