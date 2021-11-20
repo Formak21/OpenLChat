@@ -108,7 +108,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def send(self):
         if 0 < len(bytearray(self.NameEdit.text(), encoding='utf-8')) <= 16 and 0 < len(
                 bytearray(self.TextLine.text(), encoding='utf-8')) <= 256:
-            code = self.Server.send_message({'name': self.NameEdit.text(), 'message': self.TextLine.text()})
+            code = self.Server.send_message({'name': self.NameEdit.text(), 'message': self.TextLine.text().replace('"', '\"')})
 
             if code == 'success':
                 self.reload()

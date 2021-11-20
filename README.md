@@ -19,5 +19,3 @@ do what writed in note
 start exe file
 
 profit
-
-test
