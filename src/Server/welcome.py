@@ -1,5 +1,5 @@
 # welcome message
-VERSION = '1.0'
+VERSION = '1.1'
 print(""".s5SSSs.                                .s        .s5SSSs.                                
       SS. .s5SSSs.  .s5SSSs.  .s    s.                  SS. .s    s.  .s5SSSs.  .s5SSSSs. 
 sS    S%S       SS.       SS.       SS. sS        sS    `:;       SS.       SS.    SSS    

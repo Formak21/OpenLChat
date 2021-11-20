@@ -54,7 +54,7 @@ class Ui_ConnectionDialog(object):
     def retranslateUi(self, ConnectionDialog):
         _translate = QtCore.QCoreApplication.translate
         ConnectionDialog.setWindowTitle(_translate("ConnectionDialog", "OpenLChat - Connection"))
-        self.VersionLabel.setText(_translate("ConnectionDialog", "Ver:1.0"))
+        self.VersionLabel.setText(_translate("ConnectionDialog", "Ver:1.1"))
         self.label_4.setText(_translate("ConnectionDialog", "OpenLChat"))
         self.ConnectButton.setText(_translate("ConnectionDialog", "Connect"))
         self.label.setText(_translate("ConnectionDialog", ":"))
