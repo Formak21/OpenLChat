@@ -12,21 +12,21 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_ErrorDialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(300, 120)
-        self.pushButton = QtWidgets.QPushButton(Dialog)
+    def setupUi(self, ErrorDialog):
+        ErrorDialog.setObjectName("ErrorDialog")
+        ErrorDialog.resize(300, 120)
+        self.pushButton = QtWidgets.QPushButton(ErrorDialog)
         self.pushButton.setGeometry(QtCore.QRect(215, 86, 75, 24))
         self.pushButton.setObjectName("pushButton")
-        self.label = QtWidgets.QLabel(Dialog)
+        self.label = QtWidgets.QLabel(ErrorDialog)
         self.label.setGeometry(QtCore.QRect(10, 20, 271, 51))
         self.label.setObjectName("label")
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(ErrorDialog)
+        QtCore.QMetaObject.connectSlotsByName(ErrorDialog)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, ErrorDialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Error"))
-        self.pushButton.setText(_translate("Dialog", "OK"))
-        self.label.setText(_translate("Dialog", "ERROR MESSAGE IS HERE"))
+        ErrorDialog.setWindowTitle(_translate("ErrorDialog", "Notification"))
+        self.pushButton.setText(_translate("ErrorDialog", "OK"))
+        self.label.setText(_translate("ErrorDialog", "ERROR MESSAGE IS HERE"))

@@ -11,6 +11,7 @@ from ErrorDialog import ErrorDialog
 class Communicate(QObject):
     MainFromConnection = pyqtSignal(object)
     MainToError = pyqtSignal(object)
+    StopAutoUpdater = pyqtSignal()
 
 
 class AutoUpdater(QObject):
@@ -22,6 +23,9 @@ class AutoUpdater(QObject):
             self.AutoUpdateTrigger.emit()
             QThread.msleep(7000)
 
+    def stop(self):
+        self.terminate()
+
 
 class MainWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -29,6 +33,7 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setFixedSize(545, 380)
         self.communication = Communicate()
+
         self.ConnectionDialog = ConnectionDialog()
         self.ConnectionDialog.communication.MainFromConnection.connect(self.set_ip_port)
         self.ErrorDialog = ErrorDialog()
@@ -37,39 +42,34 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         self.ip = str()
         self.port = int()
         self.LastReload = datetime.datetime.now()
+        self.Server = None
+
         self.AutoUpdaterThread = QThread()
         self.AutoUpdater = AutoUpdater()
         self.AutoUpdater.moveToThread(self.AutoUpdaterThread)
-        self.AutoUpdater.AutoUpdateTrigger.connect(self.auto_reload)
+        self.AutoUpdater.AutoUpdateTrigger.connect(self.reload)
+        self.communication.StopAutoUpdater.connect(self.AutoUpdater.stop)
         self.AutoUpdaterThread.started.connect(self.AutoUpdater.run)
-        self.Server = None
 
         self.ExitButton.clicked.connect(self.close)
         self.ReconnectButton.clicked.connect(self.on_reconnect)
         self.ReloadButton.clicked.connect(self.reload)
         self.SendButton.clicked.connect(self.send)
         self.on_reconnect()
-    
-    @pyqtSlot()
-    def auto_reload(self):
-        self.reload()
 
     def on_reconnect(self):
         self.IsConnectionWorks = False
-        if self.AutoUpdaterThread.isRunning():
-            self.AutoUpdaterThread.exit()
+        self.communication.StopAutoUpdater.emit()
         self.reconnect()
+        self.reload()
         self.AutoUpdaterThread.start()
 
     def reconnect(self):
+        self.on_connection_lost()
         while not self.IsConnectionWorks:
-            self.on_connection_lost()
-            self.get_ip_port()
+            self.ConnectionDialog.exec()
         self.Server = net.OpenLChatClient((self.ip, self.port))
         self.on_connection_back()
-
-    def get_ip_port(self):
-        self.ConnectionDialog.exec()
 
     def set_ip_port(self, ip_port):
         if ip_port[0].count('.') == 3 and ip_port[0].replace('.', '').isnumeric() and len(ip_port[0]) <= 16 and len(
@@ -77,13 +77,10 @@ class MainWidget(QMainWindow, Ui_MainWindow):
             self.ip = ip_port[0]
             self.port = int(ip_port[1])
             self.setWindowTitle(f"OpenLChat {self.ip}:{str(self.port)}")
-            self.IsConnectionWorks = self.connection_checker()
+            self.IsConnectionWorks = net.check_connection((self.ip, self.port))
         else:
             self.on_error('Error 1 \nIncorrect IPv4 address or Port.')
             self.IsConnectionWorks = False
-
-    def connection_checker(self) -> bool:
-        return net.check_connection((self.ip, self.port))
 
     def on_connection_lost(self):
         self.ReloadButton.setDisabled(True)
@@ -108,7 +105,8 @@ class MainWidget(QMainWindow, Ui_MainWindow):
     def send(self):
         if 0 < len(bytearray(self.NameEdit.text(), encoding='utf-8')) <= 16 and 0 < len(
                 bytearray(self.TextLine.text(), encoding='utf-8')) <= 256:
-            code = self.Server.send_message({'name': self.NameEdit.text(), 'message': self.TextLine.text().replace('"', '\"')})
+            code = self.Server.send_message(
+                {'name': self.NameEdit.text(), 'message': self.TextLine.text().replace('"', "'")})
 
             if code == 'success':
                 self.reload()
@@ -123,10 +121,10 @@ class MainWidget(QMainWindow, Ui_MainWindow):
         else:
             self.on_error('Error 2 \nMessage/name is empty or long')
 
+    @pyqtSlot()
     def reload(self):
         base = self.Server.get_base()
         if type(base) == str:
-            self.AutoUpdaterThread.exit()
             self.on_error('disconnected.')
             self.on_reconnect()
             return

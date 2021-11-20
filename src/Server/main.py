@@ -35,24 +35,27 @@ def get_base() -> list:
 
 
 for connection in net.get_connection():
-    data = connection[0].recv(500).decode('utf-8')
-    if not data:
+    try:
+        data = connection[0].recv(500).decode('utf-8')
+        if not data:
+            connection[0].close()
+            continue
+        data = json.loads(data)
+        print('LOG:', data)
+        if data['command'] == 'send':
+            data = data['data']
+            answer = {'code': add_to_base(data)}
+            print('LOG:', answer)
+            connection[0].send(json.dumps(answer).encode("utf-8"))
+        elif data['command'] == 'get':
+            print('LOG:', 'base sent')
+            connection[0].send(json.dumps(get_base()).encode("utf-8"))
+        elif data['command'] == 'test':
+            answer = {'code': 'we are stable, ver:' + welcome.VERSION}
+            print('LOG:', answer)
+            connection[0].send(json.dumps(answer).encode("utf-8"))
+        else:
+            connection[0].send(json.dumps({'code': 'incorrect command'}).encode("utf-8"))
         connection[0].close()
-        continue
-    data = json.loads(data)
-    print('LOG:', data)
-    if data['command'] == 'send':
-        data = data['data']
-        answer = {'code': add_to_base(data)}
-        print('LOG:', answer)
-        connection[0].send(json.dumps(answer).encode("utf-8"))
-    elif data['command'] == 'get':
-        print('LOG:', 'base sent')
-        connection[0].send(json.dumps(get_base()).encode("utf-8"))
-    elif data['command'] == 'test':
-        answer = {'code': 'we are stable, ver:' + welcome.VERSION}
-        print('LOG:', answer)
-        connection[0].send(json.dumps(answer).encode("utf-8"))
-    else:
-        connection[0].send(json.dumps({'code': 'incorrect command'}).encode("utf-8"))
-    connection[0].close()
+    except:
+        connection[0].close()
